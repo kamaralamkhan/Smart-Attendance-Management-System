@@ -1,0 +1,85 @@
+/* Add custom CSS styles here */
+
+/* Header Styles */
+header {
+    /* background-color: #007BFF; */
+    color: white;
+    /* padding: 10px 0; */
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+}
+
+/* Navbar Styles */
+.navbar {
+    background-color: #fff;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* Navbar Link Styles */
+.navbar-nav a.nav-link {
+    color: #333;
+    font-weight: bold;
+    padding: 10px 20px;
+    transition: color 0.2s;
+}
+
+/* Active Navbar Link Styles */
+.navbar-nav a.nav-link.active {
+    color: #007BFF;
+}
+
+/* Main Content Styles */
+.container {
+    
+    padding: 20px;
+    background-color: #fff;
+    /* border: 1px solid #e0e0e0; */
+    border-radius: 5px;
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+}
+
+/* Center the login panel */
+main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* height: 100vh; */
+}
+
+/* Login Panel Styles */
+.login-panel {
+    max-width: 400px;
+    width: 100%;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer Styles */
+footer {
+    background-color: #f8f9fa;
+    color: #333;
+    padding: 20px 0;
+    border-top: 1px solid #e0e0e0;
+}
+
+/* Center Footer Text */
+footer p {
+    text-align: center;
+}
+
+/* Button Styles */
+button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.2s;
+}
+
+/* Hover State for Buttons */
+button:hover {
+    background-color: #0056b3;
+}

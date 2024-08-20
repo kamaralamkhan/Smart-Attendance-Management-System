@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% load customfilters tz %}  {# Load the custom filter and timezone library #}
+
+{% block title %}View Attendance{% endblock %}
+
+{% block content %}
+<div class="container mt-1">
+    <h1>View Attendance</h1>
+
+    <form method="post" class="mb-3">
+        {% csrf_token %}
+        <div class="row g-3">
+            <div class="col-md-4">
+                <label for="department" class="form-label">Department:</label>
+                <select id="department" name="department" class="form-select">
+                    <option value="">Select</option>
+                    <option value="BCA">BCA</option>
+                    <option value="BJMC">BJMC</option>
+                    <option value="BBA">BBA</option>
+                    <option value="MCA">MCA</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="session" class="form-label">Session:</label>
+                <select id="session" name="session" class="form-select">
+                    <option value="">Select</option>
+                    <option value="2021-24">2021-24</option>
+                    <option value="2022-25">2022-25</option>
+                    <option value="2023-26">2023-26</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </div>
+        </div>
+    </form>
+
+    {% if students %}
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Enrollment Number</th>
+                <th>Name</th>
+                <th>Status</th>
+                <!-- <th>Date</th> -->
+                <th>Present Count</th>
+                <th>Updated On</th>  {# Add a new column for Updated On #}
+                <th>subject</th>  {# Add a new column for Updated On #}
+                <!-- <th>Time</th>  {# Add a new column for Time #} -->
+                <th>Percentage</th>  {# Add a new column for Percentage #}
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+                <tr>
+                    <td>{{ student.enrollment_number }}</td>
+                    <td>{{ student.name }}</td>
+                    <td>
+                        {% for record in student.attendance_records.all %}
+                            {{ record.status }}<br>
+                        {% endfor %}
+                    </td>
+                    <!-- <td>
+                        {% for record in student.attendance_records.all %}
+                            {{ record.date|date:"Y-m-d" }}<br>
+                        {% endfor %}
+                    </td> -->
+                    <td>
+                        {{ student.attendance_records|present_count }}  {# Use the custom filter here #}
+                    </td>
+                    <td>
+                        {% for record in student.attendance_records.all %}
+                            {{ record.updated_on|date:"Y-m-d H:i" }}<br>  {# Display Updated On with local timezone #}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% for record in student.attendance_records.all %}
+                            {% if record.subject %}
+                                {{ record.subject }}<br>
+                            {% else %}
+                                N/A<br>
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                    <!-- <td>
+                        {% for record in student.attendance_records.all %}
+                            {{ record.updated_on|time:"H:i" }}<br>  {# Display Time with local timezone #}
+                        {% endfor %}
+                    </td> -->
+                    <td>
+                        {% if student.attendance_records.count > 0 %}
+                            {{ student.attendance_records|present_percentage:"%" }}  {# Use a custom filter for percentage #}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p>No attendance records found.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+├── attendance_managment/   (project)
+│         └── settings.py
+│         └── urls.py
+│         └── wsgi.py      
+│         └── asgi.py      
+├── students/ (app)
+│       ├── templatetags
+│         └── customfilters.py
+│       ├── admin.py
+│       ├── apps.py
+│       ├── forms.py
+│       ├── models.py
+│       ├── tests.py
+│       ├── views.py
+├── templates/
+│       ├── base.html
+│       ├── student_list.html
+│       ├── teacher.html
+├── manage.py
+├── requirements.txt
+
+
+
+
+
+2 dec
+ added a course  option successfully
+ now make it 'course ' dependable for everyother options
+
+ 

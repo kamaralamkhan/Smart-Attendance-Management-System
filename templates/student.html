@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}Student Data Entry{% endblock %}
+
+{% block content %}
+<div class="container ">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h1 class="text-center mb-4">Student Data Entry</h1>
+
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="{{ form.enrollment_number.id_for_label }}" class="form-label">Enrollment Number</label>
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.enrollment_number }}
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="{{ form.name.id_for_label }}" class="form-label">Name</label>
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.name }}
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="{{ form.department.id_for_label }}" class="form-label">Department</label>
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.department }}
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="{{ form.session.id_for_label }}" class="form-label">Session</label>
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.session }}
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="{{ form.phone_number.id_for_label }}" class="form-label">Phone Number</label>
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.phone_number }}
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="{{ form.parents_phone_number.id_for_label }}" class="form-label">Parent's Phone Number</label>
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.parents_phone_number }}
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

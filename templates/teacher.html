@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Teacher Page{% endblock %}
+
+{% block content %}
+<div class="container" id="adminContainer">
+    <h1>Welcome, {{ user.username }}!</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br>
+
+        <a href="#">Forgot Password?</a><br>
+
+        <button type="submit">Login</button>
+    </form>
+</div>
+    <!-- Add a link to the view_attendance page -->
+    <!-- <a href="{% url 'view_attendance' %}">View Student Attendance</a> -->
+
+    <!-- Display the formatted_created_on value if available -->
+    {% if attendance_record %}
+        <p>{{ attendance_record.formatted_created_on }}</p>
+    {% endif %}
+{% endblock %}

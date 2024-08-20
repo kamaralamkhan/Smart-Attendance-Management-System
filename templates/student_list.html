@@ -1,0 +1,143 @@
+<!-- student_list.html -->
+{% extends 'base.html' %}
+{% block title %}Student Attendance List{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Student List</h1>
+    <form method="get" class="mb-3">
+        <div class="row g-3">
+            <div class="col-md-4">
+                <label for="department" class="form-label">Department:</label>
+                <select id="department" name="department" class="form-select">
+                    <option value="">Select</option>
+                    <option value="BCA">BCA</option>
+                    <option value="BJMC">BJMC</option>
+                    <option value="BBA">BBA</option>
+                    <option value="MCA">MCA</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="subject" class="form-label">Subject:</label>
+                <select id="subject" name="subject" class="form-select" disabled>
+                    <option value="">Select</option>
+                    <!-- Add subject options here -->
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="session" class="form-label">Session:</label>
+                <select id="session" name="session" class="form-select">
+                    <option value="">Select</option>
+                    <option value="2021-24">2021-24</option>
+                    <option value="2022-25">2022-25</option>
+                    <option value="2023-26">2023-26</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </div>
+        </div>
+    </form>
+
+    <form id="attendance-form" method="post">
+        {% csrf_token %}
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Enrollment Number</th>
+                    <th>Name</th>
+                    <th>Department</th>
+                    <th>Session</th>
+                    <th>Phone Number</th>
+                    <th>Parent's Phone Number</th>
+                    <th>Attendance</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td>{{ student.enrollment_number }}</td>
+                    <td>{{ student.name }}</td>
+                    <td>{{ student.department }}</td>
+                    <td>{{ student.session }}</td>
+                    <td>{{ student.phone_number }}</td>
+                    <td>{{ student.parents_phone_number }}</td>
+                    <td>
+                        <input type="hidden" name="student_name" value="{{ student.name }}">
+                        <input type="hidden" name="student_enrollment_number" value="{{ student.enrollment_number }}">
+                        <input type="hidden" name="parent_phone_number" value="{{ student.parents_phone_number }}">
+                        <input type="hidden" name="subject" value="{{ student.subject }}">
+                        <select class="form-select attendance" name="attendance_value">
+                            <option value="">----</option>
+                            <option value="A">Absent</option>
+                            <option value="P">Present</option>
+                        </select>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7">No students found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button id="submit-attendance" type="submit" class="btn btn-primary">Submit Attendance</button>
+    </form>
+</div>
+<script>
+
+const subjectOptions = {
+        'BCA': ['Computer Graphics', 'Computer Graphics Lab', 'Operating System', 'Operating System Lab', 'ML', 'ML Lab', 'MP', 'T&P', 'VAC', 'Events'],
+        'BJMC': ['Subject1', 'Subject2', 'Subject3', 'Subject4'],
+        'BBA': ['SubjectA', 'SubjectB', 'SubjectC'],
+        'MCA': ['SubjectX', 'SubjectY', 'SubjectZ'],
+    };
+
+    // Update subject dropdown based on selected department
+    const departmentDropdown = document.getElementById('department');
+    const subjectDropdown = document.getElementById('subject');
+
+    departmentDropdown.addEventListener('change', function () {
+        const selectedDepartment = this.value;
+        const subjects = subjectOptions[selectedDepartment] || [];
+
+        // Update subject dropdown options and enable/disable it
+        subjectDropdown.innerHTML = '<option value="">Select</option>' + subjects.map(subject => `<option value="${subject}">${subject}</option>`).join('');
+        subjectDropdown.disabled = subjects.length === 0;
+    });
+
+    document.getElementById('submit-attendance').addEventListener('click', function() {
+        const studentNames = document.querySelectorAll('input[name="student_name"]');
+        const enrollmentNumbers = document.querySelectorAll('input[name="student_enrollment_number"]');
+        const attendanceValues = document.querySelectorAll('.attendance');
+        const parentPhoneNumbers = document.querySelectorAll('input[name="parent_phone_number"]');
+        const subjects = document.querySelectorAll('input[name="subject"]');
+        let absentCount = 0;
+
+        // Iterate through the student data
+        for (let i = 0; i < studentNames.length; i++) {
+            const studentName = studentNames[i].value;
+            const enrollmentNumber = enrollmentNumbers[i].value;
+            const attendanceValue = attendanceValues[i].value;
+            const parentPhoneNumber = parentPhoneNumbers[i].value;
+            const subject = subjects[i].value;
+
+            // Include these fields in your data submission if needed
+            // Here, we're just logging the data for demonstration
+            console.log(`Name: ${studentName}, Enrollment Number: ${enrollmentNumber}, Attendance: ${attendanceValue}, Parent's Phone Number: ${parentPhoneNumber}, Subject: ${subject}`);
+
+            if (attendanceValue === 'A') {
+                const message = `Your ward '${studentName}' is absent, and the message has been sent to parent's number '${parentPhoneNumber}'`;
+                alert(message);
+                absentCount++;
+            }
+        }
+
+        if (absentCount > 0) {
+            alert('Attendance successfully submitted for ' + absentCount + ' absent student(s).');
+        } else {
+            alert('No absent students found.');
+        }
+    });
+</script>
+{% endblock %}
